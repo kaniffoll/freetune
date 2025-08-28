@@ -4,11 +4,17 @@ import android.media.AudioRecord
 import android.util.Log
 import be.tarsos.dsp.io.TarsosDSPAudioFormat
 import be.tarsos.dsp.io.TarsosDSPAudioInputStream
-import com.example.domain.resources.AudioRecorder.CHANNELS
-import com.example.domain.resources.AudioRecorder.SAMPLE_RATE
-import com.example.domain.resources.AudioRecorder.SAMPLE_SIZE_IN_BITS
+import com.example.domain.resources.AudioRecorderSettings.CHANNELS
+import com.example.domain.resources.AudioRecorderSettings.SAMPLE_RATE
+import com.example.domain.resources.AudioRecorderSettings.SAMPLE_SIZE_IN_BITS
 
 class AndroidRecordInputStream(private val audioRecord: AudioRecord) : TarsosDSPAudioInputStream {
+    init {
+        if (audioRecord.state == AudioRecord.STATE_INITIALIZED) {
+            audioRecord.startRecording()
+        }
+    }
+
     override fun skip(bytesToSkip: Long): Long = 0
 
     override fun read(b: ByteArray, off: Int, len: Int): Int {

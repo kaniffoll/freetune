@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="border_width">3dp</dimen>
+    <dimen name="note_circle_size">80dp</dimen>
+    <dimen name="tuner_draw_scope">500dp</dimen>
+    <dimen name="tuner_info_padding">180dp</dimen>
+</resources>

@@ -9,9 +9,9 @@ import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchProcessor
 import com.example.domain.audio.AndroidRecordInputStream
-import com.example.domain.resources.AudioRecorder.BUFFER_SIZE
-import com.example.domain.resources.AudioRecorder.OVERLAP
-import com.example.domain.resources.AudioRecorder.SAMPLE_RATE
+import com.example.domain.resources.AudioRecorderSettings.BUFFER_SIZE
+import com.example.domain.resources.AudioRecorderSettings.OVERLAP
+import com.example.domain.resources.AudioRecorderSettings.SAMPLE_RATE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,12 +24,18 @@ class AudioAnalyzerImpl : AudioAnalyzer {
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     override fun startListening(onPitchDetected: (Float) -> Unit) {
+        val minBufferSize = AudioRecord.getMinBufferSize(
+            SAMPLE_RATE.toInt(),
+            AudioFormat.CHANNEL_IN_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
         val audioRecord = AudioRecord(
             MediaRecorder.AudioSource.MIC,
             SAMPLE_RATE.toInt(),
             AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT,
-            BUFFER_SIZE * 10
+            maxOf(minBufferSize, BUFFER_SIZE)
         )
 
         if (dispatcher != null) return

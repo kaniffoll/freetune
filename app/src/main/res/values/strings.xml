@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">freetune</string>
+    <string name="app_name">FreeTune</string>
+    <string name="HZ">HZ</string>
 </resources>
